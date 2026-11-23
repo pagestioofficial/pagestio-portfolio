@@ -86,7 +86,7 @@ function Brand({
       </span>
       {showName && (
         <span
-          className={`font-['Poppins',_sans-serif] font-bold tracking-[0.22em] text-[#f8f7f9] ${
+          className={`font-['Poppins:Bold',_sans-serif] tracking-[0.22em] text-[#f8f7f9] ${
             compact ? "text-[16px]" : "text-[20px]"
           }`}
         >
@@ -148,7 +148,7 @@ function Navigation() {
               key={item.id}
               type="button"
               onClick={() => scrollTo(item.id)}
-              className={`font-['Poppins',_sans-serif] font-medium text-[14px] transition-colors duration-200 ${
+              className={`font-['Poppins:Regular',_sans-serif] text-[14px] transition-colors duration-200 ${
                 activeSection === item.id
                   ? "text-[#f4c758]"
                   : "text-white/55 hover:text-white"
@@ -207,19 +207,19 @@ function HeroSection() {
         <div>
           <div className="mb-8 flex items-center gap-3">
             <span className="h-px w-10 bg-[#e3b64b]" />
-            <span className="font-['Poppins',_sans-serif] font-medium text-[12px] uppercase tracking-[0.3em] text-[#e3b64b]">
+            <span className="font-['Poppins:Medium',_sans-serif] text-[12px] uppercase tracking-[0.3em] text-[#e3b64b]">
               Company portfolio
             </span>
           </div>
 
-          <h1 className="max-w-4xl font-['Poppins',_sans-serif] font-bold text-[clamp(44px,7.5vw,112px)] leading-[1] sm:leading-[0.88] tracking-[-0.04em] text-[#f8f7f9]">
-            Ideas into{" "}
-            <span className="gold-gradient-text">
+          <h1 className="max-w-4xl font-['Poppins:Bold',_sans-serif] text-[clamp(54px,8vw,112px)] leading-[0.88] tracking-[-0.055em] text-[#f8f7f9]">
+            Ideas into
+            <span className="block gold-gradient-text">
               impact.
             </span>
           </h1>
 
-          <p className="mt-8 max-w-xl font-['Poppins',_sans-serif] font-normal text-[16px] leading-8 text-white/55 sm:text-[19px]">
+          <p className="mt-8 max-w-xl font-['Poppins:Regular',_sans-serif] text-[17px] leading-8 text-white/55 sm:text-[19px]">
             PAGESTIO is a forward-looking company focused on turning ambitious
             ideas into thoughtful, meaningful digital experiences.
           </p>
@@ -432,7 +432,7 @@ function ContactsSection() {
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 group-hover:bg-[#e3b64b] group-hover:text-[#111] group-hover:shadow-[0_0_20px_rgba(227,182,75,0.35)]">
                   <Mail className="h-5 w-5" strokeWidth={1.75} />
                 </span>
-                <span className="font-['Poppins',_sans-serif] font-medium text-[15px] text-[#e3b64b] transition-colors group-hover:text-[#f5d77f] sm:text-[17px]">
+                <span className="font-['Poppins:Medium',_sans-serif] text-[15px] text-[#e3b64b] transition-colors group-hover:text-[#f5d77f] sm:text-[17px]">
                   pagestio.official@gmail.com
                 </span>
               </a>
@@ -443,7 +443,7 @@ function ContactsSection() {
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 group-hover:bg-[#e3b64b] group-hover:text-[#111] group-hover:shadow-[0_0_20px_rgba(227,182,75,0.35)]">
                   <Phone className="h-5 w-5" strokeWidth={1.75} />
                 </span>
-                <span className="font-['Poppins',_sans-serif] font-medium text-[15px] text-white/70 transition-colors group-hover:text-white sm:text-[17px]">
+                <span className="font-['Poppins:Medium',_sans-serif] text-[15px] text-white/70 transition-colors group-hover:text-white sm:text-[17px]">
                   +91 62384 73127
                 </span>
               </a>
