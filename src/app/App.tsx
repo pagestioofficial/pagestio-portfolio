@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import {
   ArrowDownRight,
   ArrowRight,
+  ArrowUpRight,
   Boxes,
   Code2,
+  ExternalLink,
   Mail,
   Phone,
   Sparkles,
@@ -340,10 +342,13 @@ function AboutSection() {
 const projectPlaceholders = [
   {
     index: "01",
-    badge: "In Active Development",
-    label: "Flagship In-House SaaS",
+    badge: "In-House SaaS • Mind Project",
+    label: "Stoqesy",
+    tagline: "AI-Powered Retail Inventory & Purchase Planning",
     description:
-      "Our first proprietary SaaS software engineered to resolve critical workflow problems. Under active development — architecture, features, and early access preview coming soon.",
+      "Our flagship proprietary SaaS platform for retail stores, supermarkets, and pharmacies. Analyzes daily billing data to forecast customer demand, eliminate stockouts, and automate supplier order schedules.",
+    url: "https://www.stoqesy.in",
+    cta: "Visit stoqesy.in",
     tone: "from-[#30240e] to-[#0d0d0d]",
   },
   {
@@ -383,36 +388,70 @@ function ProjectsSection() {
         </div>
 
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
-          {projectPlaceholders.map((project, index) => (
-            <article
-              key={project.index}
-              className={`group relative min-h-[420px] overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${project.tone} p-7 sm:p-9 ${
-                index === 0 ? "lg:col-span-2" : ""
-              }`}
-            >
-              <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full border border-[#e3b64b]/10 transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute -right-2 top-16 h-40 w-40 rounded-full border border-[#e3b64b]/10 transition-transform duration-500 group-hover:scale-110" />
-              <div className="relative flex h-full flex-col justify-between">
-                <div className="flex items-center justify-between">
+          {projectPlaceholders.map((project, index) => {
+            const isExternal = Boolean(project.url);
+            const CardComponent = isExternal ? "a" : "article";
+            const cardProps = isExternal
+              ? {
+                  href: project.url,
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  "aria-label": `Visit ${project.label}`,
+                }
+              : {};
+
+            return (
+              <CardComponent
+                key={project.index}
+                {...cardProps}
+                className={`group relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${project.tone} p-7 transition-all duration-300 sm:p-9 ${
+                  index === 0
+                    ? "lg:col-span-2 hover:border-[#e3b64b]/45 hover:shadow-[0_0_35px_rgba(215,170,57,0.15)]"
+                    : ""
+                } ${isExternal ? "cursor-pointer hover:-translate-y-1" : ""}`}
+              >
+                <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full border border-[#e3b64b]/10 transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute -right-2 top-16 h-40 w-40 rounded-full border border-[#e3b64b]/10 transition-transform duration-500 group-hover:scale-110" />
+
+                <div className="relative flex items-center justify-between">
                   <span className="font-['Poppins:Regular',_sans-serif] text-[12px] tracking-[0.18em] text-white/35">
                     {project.index}
                   </span>
-                  <ArrowDownRight className="h-5 w-5 text-[#e3b64b]/70" />
+                  {isExternal ? (
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e3b64b]/35 text-[#f4c758] transition-all duration-300 group-hover:border-[#e3b64b] group-hover:bg-[#e3b64b] group-hover:text-[#111]">
+                      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  ) : (
+                    <ArrowDownRight className="h-5 w-5 text-[#e3b64b]/70" />
+                  )}
                 </div>
-                <div>
+
+                <div className="relative">
                   <p className="font-['Poppins:Medium',_sans-serif] text-[11px] uppercase tracking-[0.25em] text-[#dcb04c]">
                     {project.badge}
                   </p>
                   <h3 className="mt-3 max-w-md font-['Poppins:Bold',_sans-serif] text-[32px] leading-tight text-white sm:text-[40px]">
                     {project.label}
                   </h3>
-                  <p className="mt-4 max-w-md font-['Poppins:Regular',_sans-serif] text-[14px] leading-6 text-white/40">
+                  {project.tagline && (
+                    <p className="mt-1 font-['Poppins:Medium',_sans-serif] text-[14px] text-[#f5d77f] sm:text-[15px]">
+                      {project.tagline}
+                    </p>
+                  )}
+                  <p className="mt-4 max-w-xl font-['Poppins:Regular',_sans-serif] text-[14px] leading-6 text-white/45">
                     {project.description}
                   </p>
+
+                  {project.url && (
+                    <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#e3b64b]/40 bg-[#e3b64b]/10 px-5 py-2.5 font-['Poppins:Medium',_sans-serif] text-[13px] text-[#f4c758] transition-all duration-300 group-hover:border-[#e3b64b] group-hover:bg-[#e3b64b] group-hover:text-[#111]">
+                      <span>{project.cta}</span>
+                      <ExternalLink className="h-3.5 w-3.5" />
+                    </div>
+                  )}
                 </div>
-              </div>
-            </article>
-          ))}
+              </CardComponent>
+            );
+          })}
         </div>
       </div>
     </section>
