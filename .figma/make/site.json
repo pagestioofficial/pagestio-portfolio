@@ -1,0 +1,11 @@
+{
+  "title": "PAGESTIO | Portfolio",
+  "description": "PAGESTIO is a forward-looking company turning ambitious ideas into thoughtful digital experiences.",
+  "robots": {
+    "index": true
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
