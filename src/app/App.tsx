@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import {
   ArrowDownRight,
   ArrowRight,
-  Layers3,
-  Lightbulb,
+  Boxes,
+  Code2,
   Mail,
   Phone,
-  Target,
+  Sparkles,
 } from "lucide-react";
 import pagestioLogo from "../assets/pagestio-logo.png";
 import pagestioIcon from "../assets/pagestio-icon.png";
@@ -220,8 +220,7 @@ function HeroSection() {
           </h1>
 
           <p className="mt-8 max-w-xl font-['Poppins:Regular',_sans-serif] text-[17px] leading-8 text-white/55 sm:text-[19px]">
-            PAGESTIO is a forward-looking company focused on turning ambitious
-            ideas into thoughtful, meaningful digital experiences.
+            PAGESTIO is a multi-product SaaS studio and digital engineering firm. We turn real-world problems into scalable software products, while crafting custom web and software solutions for forward-thinking businesses.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -267,25 +266,25 @@ function HeroSection() {
 
 const strengths = [
   {
-    icon: Lightbulb,
+    icon: Boxes,
     number: "01",
-    title: "Think",
+    title: "Proprietary SaaS",
     description:
-      "We begin by understanding the idea, the audience, and the opportunity behind every brief.",
+      "We identify friction points in real-world workflows, ideate scalable solutions, and build specialized SaaS software from the ground up.",
   },
   {
-    icon: Target,
+    icon: Code2,
     number: "02",
-    title: "Shape",
+    title: "Custom Solutions",
     description:
-      "We bring clarity to the direction and shape a focused path from concept to execution.",
+      "When businesses bring us their unique challenges, we design and build tailored web applications, platforms, and robust software systems.",
   },
   {
-    icon: Layers3,
+    icon: Sparkles,
     number: "03",
-    title: "Build",
+    title: "Problem to Product",
     description:
-      "We craft considered solutions with a balance of function, detail, and lasting value.",
+      "From deep problem analysis and system architecture to intuitive UI/UX and rapid deployment, we deliver high-impact digital experiences.",
   },
 ];
 
@@ -305,10 +304,7 @@ function AboutSection() {
 
           <div className="flex items-end">
             <p className="max-w-2xl font-['Poppins:Regular',_sans-serif] text-[20px] leading-[1.65] text-white/55 sm:text-[24px]">
-              PAGESTIO brings ideas, strategy, and execution together. This space
-              will soon tell our complete story, introduce our capabilities, and
-              show how we create value for the people and businesses we work
-              with.
+              PAGESTIO is an innovation-driven software company focused on solving real-world challenges. We operate with a dual mission: engineering our own suite of proprietary SaaS products, while partnering with companies to architect bespoke websites and high-performance software systems tailored to their exact needs.
             </p>
           </div>
         </div>
@@ -342,9 +338,30 @@ function AboutSection() {
 }
 
 const projectPlaceholders = [
-  { index: "01", label: "Featured project", tone: "from-[#30240e] to-[#0d0d0d]" },
-  { index: "02", label: "Selected work", tone: "from-[#161616] to-[#090909]" },
-  { index: "03", label: "Case study", tone: "from-[#211b10] to-[#0c0c0b]" },
+  {
+    index: "01",
+    badge: "In Active Development",
+    label: "Flagship In-House SaaS",
+    description:
+      "Our first proprietary SaaS software engineered to resolve critical workflow problems. Under active development — architecture, features, and early access preview coming soon.",
+    tone: "from-[#30240e] to-[#0d0d0d]",
+  },
+  {
+    index: "02",
+    badge: "Client Engineering",
+    label: "Custom Web & Software Systems",
+    description:
+      "Tailor-made web applications, enterprise software, and digital solutions crafted to solve client-specific operational challenges.",
+    tone: "from-[#161616] to-[#090909]",
+  },
+  {
+    index: "03",
+    badge: "SaaS Pipeline",
+    label: "Multi-Product Ventures",
+    description:
+      "Continuously researching, validating, and incubating next-generation SaaS tools to solve emerging market friction points.",
+    tone: "from-[#211b10] to-[#0c0c0b]",
+  },
 ];
 
 function ProjectsSection() {
@@ -361,8 +378,7 @@ function ProjectsSection() {
             </h2>
           </div>
           <p className="max-w-sm font-['Poppins:Regular',_sans-serif] text-[14px] leading-6 text-white/40">
-            Our project stories and detailed case studies will be added here as
-            the portfolio content is finalized.
+            Explore our proprietary SaaS ventures currently in development alongside our custom software solutions.
           </p>
         </div>
 
@@ -385,14 +401,13 @@ function ProjectsSection() {
                 </div>
                 <div>
                   <p className="font-['Poppins:Medium',_sans-serif] text-[11px] uppercase tracking-[0.25em] text-[#dcb04c]">
-                    Coming soon
+                    {project.badge}
                   </p>
                   <h3 className="mt-3 max-w-md font-['Poppins:Bold',_sans-serif] text-[32px] leading-tight text-white sm:text-[40px]">
                     {project.label}
                   </h3>
                   <p className="mt-4 max-w-md font-['Poppins:Regular',_sans-serif] text-[14px] leading-6 text-white/40">
-                    Project name, scope, process, and outcome will be presented
-                    here.
+                    {project.description}
                   </p>
                 </div>
               </div>
@@ -420,8 +435,7 @@ function ContactsSection() {
           </div>
           <div className="lg:pb-2">
             <p className="font-['Poppins:Regular',_sans-serif] text-[16px] leading-7 text-white/45">
-              Have a project or partnership in mind? Reach out to PAGESTIO
-              directly.
+              Have a software challenge to solve, or looking to collaborate with PAGESTIO? Reach out directly.
             </p>
             {/* Direct Contact (Email & Phone) - Vertical */}
             <div className="mt-8 space-y-4">
