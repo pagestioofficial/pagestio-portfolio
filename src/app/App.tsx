@@ -167,29 +167,29 @@ function HeroSection() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden px-5 pb-16 pt-28 sm:px-8"
+      className="relative isolate flex min-h-screen items-center overflow-hidden px-5 pb-16 pt-28 sm:px-8"
     >
-      <div className="absolute -right-40 top-20 h-[540px] w-[540px] rounded-full bg-[#d6a438]/10 blur-[130px]" />
-      <div className="absolute -left-40 bottom-0 h-[420px] w-[420px] rounded-full bg-[#f8d875]/5 blur-[120px]" />
-      <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:70px_70px]" />
+      <div className="pointer-events-none absolute -right-40 top-20 h-[540px] w-[540px] rounded-full bg-[#d6a438]/10 blur-[90px] transform-gpu" />
+      <div className="pointer-events-none absolute -left-40 bottom-0 h-[420px] w-[420px] rounded-full bg-[#f8d875]/5 blur-[90px] transform-gpu" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,.8)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.8)_1px,transparent_1px)] [background-size:70px_70px]" />
 
-      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
         <div>
           <div className="mb-8 flex items-center gap-3">
             <span className="h-px w-10 bg-[#e3b64b]" />
-            <span className="font-['Poppins:Medium',_sans-serif] text-[12px] uppercase tracking-[0.3em] text-[#e3b64b]">
+            <span className="font-['Poppins',_sans-serif] font-medium text-[12px] uppercase tracking-[0.3em] text-[#e3b64b]">
               Company portfolio
             </span>
           </div>
 
-          <h1 className="max-w-4xl font-['Poppins:Bold',_sans-serif] text-[clamp(54px,8vw,112px)] leading-[0.88] tracking-[-0.055em] text-[#f8f7f9]">
-            Ideas into
-            <span className="block bg-gradient-to-r from-[#c99228] via-[#ffe795] to-[#d5a331] bg-clip-text text-transparent">
+          <h1 className="max-w-4xl font-['Poppins',_sans-serif] font-bold text-[clamp(44px,7.5vw,112px)] leading-[1] sm:leading-[0.88] tracking-[-0.04em] text-[#f8f7f9]">
+            Ideas into{" "}
+            <span className="gold-gradient-text">
               impact.
             </span>
           </h1>
 
-          <p className="mt-8 max-w-xl font-['Poppins:Regular',_sans-serif] text-[17px] leading-8 text-white/55 sm:text-[19px]">
+          <p className="mt-8 max-w-xl font-['Poppins',_sans-serif] font-normal text-[16px] leading-8 text-white/55 sm:text-[19px]">
             PAGESTIO is a forward-looking company focused on turning ambitious
             ideas into thoughtful, meaningful digital experiences.
           </p>

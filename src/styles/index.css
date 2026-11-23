@@ -3,3 +3,14 @@
 @import 'tw-animate-css';
 @import './default_theme.css';
 @import './globals.css';
+
+.gold-gradient-text {
+  background: linear-gradient(90deg, #c99228 0%, #ffe795 50%, #d5a331 100%);
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  display: inline-block;
+}
