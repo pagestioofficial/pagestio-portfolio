@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   ArrowDownRight,
   ArrowRight,
-  ArrowUpRight,
   Boxes,
   Code2,
   ExternalLink,
@@ -417,13 +416,7 @@ function ProjectsSection() {
                   <span className="font-['Poppins:Regular',_sans-serif] text-[12px] tracking-[0.18em] text-white/35">
                     {project.index}
                   </span>
-                  {isExternal ? (
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e3b64b]/35 text-[#f4c758] transition-all duration-300 group-hover:border-[#e3b64b] group-hover:bg-[#e3b64b] group-hover:text-[#111]">
-                      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </span>
-                  ) : (
-                    <ArrowDownRight className="h-5 w-5 text-[#e3b64b]/70" />
-                  )}
+                  <ArrowDownRight className="h-5 w-5 text-[#e3b64b]/70 transition-transform duration-300 group-hover:scale-110" />
                 </div>
 
                 <div className="relative">
