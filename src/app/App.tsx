@@ -19,6 +19,27 @@ const navItems = [
   { id: "contacts", label: "Contact" },
 ];
 
+const INSTAGRAM_URL = "https://www.instagram.com/pagestio?avpt=NHJ3YXY5ZXYxbW56";
+const WHATSAPP_URL = "https://wa.me/916238473127";
+
+function InstagramIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="17.4" cy="6.7" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.52 3.48A11.8 11.8 0 0 0 12.08 0C5.5 0 .15 5.35.15 11.93c0 2.1.55 4.15 1.6 5.95L.05 24l6.27-1.64a11.9 11.9 0 0 0 5.76 1.47h.01c6.58 0 11.93-5.35 11.93-11.93 0-3.19-1.24-6.18-3.5-8.42ZM12.09 21.8h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.72.98.99-3.63-.23-.37a9.86 9.86 0 0 1-1.52-5.26c0-5.45 4.44-9.89 9.9-9.89a9.82 9.82 0 0 1 7 2.9 9.82 9.82 0 0 1 2.9 7c-.01 5.44-4.45 9.86-9.91 9.86Zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47a8.9 8.9 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.87 1.21 3.07c.15.2 2.09 3.19 5.06 4.47.71.3 1.26.49 1.69.63.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" />
+    </svg>
+  );
+}
+
 function scrollToSection(sectionId: string) {
   document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
 }
@@ -52,7 +73,7 @@ function Brand({
       </span>
       {showName && (
         <span
-          className={`font-['Poppins:Bold',_sans-serif] tracking-[0.22em] text-[#f8f7f9] ${
+          className={`font-['Poppins',_sans-serif] font-bold tracking-[0.22em] text-[#f8f7f9] ${
             compact ? "text-[16px]" : "text-[20px]"
           }`}
         >
@@ -66,9 +87,24 @@ function Brand({
 function Navigation() {
   const [activeSection, setActiveSection] = useState("home");
 
+  const scrollTo = (sectionId: string) => {
+    setActiveSection(sectionId);
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 160;
+      // Check if user has scrolled near the bottom of the page
+      const isAtBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 180;
+
+      if (isAtBottom) {
+        setActiveSection("contacts");
+        return;
+      }
+
+      const scrollPosition = window.scrollY + 200;
 
       for (const item of navItems) {
         const section = document.getElementById(item.id);
@@ -98,8 +134,8 @@ function Navigation() {
             <button
               key={item.id}
               type="button"
-              onClick={() => scrollToSection(item.id)}
-              className={`font-['Poppins:Regular',_sans-serif] text-[14px] transition-colors duration-200 ${
+              onClick={() => scrollTo(item.id)}
+              className={`font-['Poppins',_sans-serif] font-medium text-[14px] transition-colors duration-200 ${
                 activeSection === item.id
                   ? "text-[#f4c758]"
                   : "text-white/55 hover:text-white"
@@ -111,52 +147,24 @@ function Navigation() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => scrollToSection("contacts")}
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Instagram"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-colors hover:bg-[#e3b64b] hover:text-[#111]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 hover:scale-105 hover:bg-[#e3b64b] hover:text-[#111] hover:shadow-[0_0_16px_rgba(227,182,75,0.35)]"
           >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-            >
-              <rect
-                x="3"
-                y="3"
-                width="18"
-                height="18"
-                rx="5"
-                stroke="currentColor"
-                strokeWidth="1.8"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="4"
-                stroke="currentColor"
-                strokeWidth="1.8"
-              />
-              <circle cx="17.4" cy="6.7" r="1" fill="currentColor" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollToSection("contacts")}
+            <InstagramIcon className="h-5 w-5" />
+          </a>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="WhatsApp"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-colors hover:bg-[#e3b64b] hover:text-[#111]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 hover:scale-105 hover:bg-[#e3b64b] hover:text-[#111] hover:shadow-[0_0_16px_rgba(227,182,75,0.35)]"
           >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M20.52 3.48A11.8 11.8 0 0 0 12.08 0C5.5 0 .15 5.35.15 11.93c0 2.1.55 4.15 1.6 5.95L.05 24l6.27-1.64a11.9 11.9 0 0 0 5.76 1.47h.01c6.58 0 11.93-5.35 11.93-11.93 0-3.19-1.24-6.18-3.5-8.42ZM12.09 21.8h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.72.98.99-3.63-.23-.37a9.86 9.86 0 0 1-1.52-5.26c0-5.45 4.44-9.89 9.9-9.89a9.82 9.82 0 0 1 7 2.9 9.82 9.82 0 0 1 2.9 7c-.01 5.44-4.45 9.86-9.91 9.86Zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47a8.9 8.9 0 0 1-1.65-2.05c-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.87 1.21 3.07c.15.2 2.09 3.19 5.06 4.47.71.3 1.26.49 1.69.63.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" />
-            </svg>
-          </button>
+            <WhatsAppIcon className="h-5 w-5" />
+          </a>
         </div>
       </div>
     </nav>
@@ -401,7 +409,7 @@ function ContactsSection() {
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 group-hover:bg-[#e3b64b] group-hover:text-[#111] group-hover:shadow-[0_0_20px_rgba(227,182,75,0.35)]">
                   <Mail className="h-5 w-5" strokeWidth={1.75} />
                 </span>
-                <span className="font-['Poppins:Medium',_sans-serif] text-[15px] text-[#e3b64b] transition-colors group-hover:text-[#f5d77f] sm:text-[17px]">
+                <span className="font-['Poppins',_sans-serif] font-medium text-[15px] text-[#e3b64b] transition-colors group-hover:text-[#f5d77f] sm:text-[17px]">
                   pagestio.official@gmail.com
                 </span>
               </a>
@@ -412,8 +420,34 @@ function ContactsSection() {
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 group-hover:bg-[#e3b64b] group-hover:text-[#111] group-hover:shadow-[0_0_20px_rgba(227,182,75,0.35)]">
                   <Phone className="h-5 w-5" strokeWidth={1.75} />
                 </span>
-                <span className="font-['Poppins:Medium',_sans-serif] text-[15px] text-white/70 transition-colors group-hover:text-white sm:text-[17px]">
+                <span className="font-['Poppins',_sans-serif] font-medium text-[15px] text-white/70 transition-colors group-hover:text-white sm:text-[17px]">
                   +91 62384 73127
+                </span>
+              </a>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 transition-transform duration-200 hover:translate-x-1"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 group-hover:bg-[#e3b64b] group-hover:text-[#111] group-hover:shadow-[0_0_20px_rgba(227,182,75,0.35)]">
+                  <WhatsAppIcon className="h-5 w-5" />
+                </span>
+                <span className="font-['Poppins',_sans-serif] font-medium text-[15px] text-white/70 transition-colors group-hover:text-white sm:text-[17px]">
+                  WhatsApp (+91 62384 73127)
+                </span>
+              </a>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 transition-transform duration-200 hover:translate-x-1"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#e3b64b]/45 text-[#f4c758] transition-all duration-300 group-hover:bg-[#e3b64b] group-hover:text-[#111] group-hover:shadow-[0_0_20px_rgba(227,182,75,0.35)]">
+                  <InstagramIcon className="h-5 w-5" />
+                </span>
+                <span className="font-['Poppins',_sans-serif] font-medium text-[15px] text-[#e3b64b] transition-colors group-hover:text-[#f5d77f] sm:text-[17px]">
+                  @pagestio (Instagram)
                 </span>
               </a>
             </div>
