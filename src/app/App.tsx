@@ -3,11 +3,13 @@ import {
   ArrowDownRight,
   ArrowRight,
   Boxes,
+  CheckCircle2,
   Code2,
   ExternalLink,
   Mail,
   Phone,
   Sparkles,
+  X,
 } from "lucide-react";
 import pagestioLogo from "../assets/pagestio-logo.png";
 import pagestioIcon from "../assets/pagestio-icon.png";
@@ -338,7 +340,33 @@ function AboutSection() {
   );
 }
 
-const projectPlaceholders = [
+interface ProjectItem {
+  id: string;
+  name: string;
+  badge: string;
+  tagline: string;
+  description: string;
+  url?: string;
+  ctaText?: string;
+  features?: string[];
+}
+
+interface ProjectCategory {
+  index: string;
+  badge: string;
+  label: string;
+  tagline?: string;
+  description: string;
+  tone: string;
+  url?: string;
+  cta?: string;
+  modalTitle: string;
+  modalSubtitle: string;
+  projects: ProjectItem[];
+  emptyStateNotice: string;
+}
+
+const projectCategories: ProjectCategory[] = [
   {
     index: "01",
     badge: "In-House SaaS • Mind Project",
@@ -349,6 +377,29 @@ const projectPlaceholders = [
     url: "https://www.stoqesy.in",
     cta: "Visit stoqesy.in",
     tone: "from-[#30240e] to-[#0d0d0d]",
+    modalTitle: "In-House SaaS & Mind Projects",
+    modalSubtitle:
+      "Proprietary digital products and platforms conceived, designed, and engineered in-house by PAGESTIO to solve real market challenges.",
+    projects: [
+      {
+        id: "stoqesy",
+        name: "Stoqesy",
+        badge: "Live Pilot • Active Development",
+        tagline: "AI-Powered Retail Inventory & Purchase Planning Workspace",
+        description:
+          "Stoqesy is an intelligent SaaS platform built for small-to-medium retail teams, supermarkets, and medical stores. It ingests daily closed-register sales reports (CSV/Excel) from existing billing POS systems, analyzes demand velocity, classifies inventory (out of stock, low stock, moderate stock), and generates automated supplier purchase orders with exact quantities before stock runs dry.",
+        url: "https://www.stoqesy.in",
+        ctaText: "Open Stoqesy (stoqesy.in)",
+        features: [
+          "Seamless CSV/Excel sales data import from existing billing software",
+          "Automated demand velocity & predictive reorder quantities",
+          "Real-time stockout, low stock, & dead-stock risk classification",
+          "Supplier order planning tailored to daily, weekly, or monthly schedules",
+        ],
+      },
+    ],
+    emptyStateNotice:
+      "More in-house SaaS ventures are currently in research and prototyping. As new proprietary products enter early testing, they will appear here.",
   },
   {
     index: "02",
@@ -357,6 +408,12 @@ const projectPlaceholders = [
     description:
       "Tailor-made web applications, enterprise software, and digital solutions crafted to solve client-specific operational challenges.",
     tone: "from-[#161616] to-[#090909]",
+    modalTitle: "Client Engineering & Custom Solutions",
+    modalSubtitle:
+      "High-performance websites, custom platforms, and tailored software systems engineered by PAGESTIO for partner companies and clients.",
+    projects: [],
+    emptyStateNotice:
+      "We partner with businesses to architect bespoke websites and robust software systems. Have a project or operational challenge? Connect with us to discuss your requirements.",
   },
   {
     index: "03",
@@ -365,10 +422,36 @@ const projectPlaceholders = [
     description:
       "Continuously researching, validating, and incubating next-generation SaaS tools to solve emerging market friction points.",
     tone: "from-[#211b10] to-[#0c0c0b]",
+    modalTitle: "SaaS Pipeline & Venture Incubator",
+    modalSubtitle:
+      "Concepts, emerging prototypes, and market validation workflows in active exploration by PAGESTIO.",
+    projects: [],
+    emptyStateNotice:
+      "Our venture pipeline actively evaluates industry friction points. Projects moving from ideation to build will be featured here.",
   },
 ];
 
 function ProjectsSection() {
+  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory | null>(null);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setSelectedCategory(null);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = "";
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [selectedCategory]);
+
   return (
     <section id="projects" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -387,27 +470,24 @@ function ProjectsSection() {
         </div>
 
         <div className="mt-14 grid gap-5 lg:grid-cols-3">
-          {projectPlaceholders.map((project, index) => {
-            const isExternal = Boolean(project.url);
-            const CardComponent = isExternal ? "a" : "article";
-            const cardProps = isExternal
-              ? {
-                  href: project.url,
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  "aria-label": `Visit ${project.label}`,
-                }
-              : {};
-
+          {projectCategories.map((project, index) => {
             return (
-              <CardComponent
+              <div
                 key={project.index}
-                {...cardProps}
-                className={`group relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${project.tone} p-7 transition-all duration-300 sm:p-9 ${
+                role="button"
+                tabIndex={0}
+                onClick={() => setSelectedCategory(project)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelectedCategory(project);
+                  }
+                }}
+                className={`group relative flex min-h-[420px] cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${project.tone} p-7 text-left transition-all duration-300 hover:-translate-y-1 sm:p-9 ${
                   index === 0
                     ? "lg:col-span-2 hover:border-[#e3b64b]/45 hover:shadow-[0_0_35px_rgba(215,170,57,0.15)]"
-                    : ""
-                } ${isExternal ? "cursor-pointer hover:-translate-y-1" : ""}`}
+                    : "hover:border-white/25 hover:shadow-[0_0_25px_rgba(255,255,255,0.05)]"
+                }`}
               >
                 <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full border border-[#e3b64b]/10 transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute -right-2 top-16 h-40 w-40 rounded-full border border-[#e3b64b]/10 transition-transform duration-500 group-hover:scale-110" />
@@ -416,7 +496,9 @@ function ProjectsSection() {
                   <span className="font-['Poppins:Regular',_sans-serif] text-[12px] tracking-[0.18em] text-white/35">
                     {project.index}
                   </span>
-                  <ArrowDownRight className="h-5 w-5 text-[#e3b64b]/70 transition-transform duration-300 group-hover:scale-110" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border border-transparent text-[#e3b64b]/70 transition-all duration-300 group-hover:border-[#e3b64b]/40 group-hover:bg-[#e3b64b]/10 group-hover:text-[#f4c758]">
+                    <ArrowDownRight className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                  </div>
                 </div>
 
                 <div className="relative">
@@ -435,18 +517,175 @@ function ProjectsSection() {
                     {project.description}
                   </p>
 
-                  {project.url && (
-                    <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#e3b64b]/40 bg-[#e3b64b]/10 px-5 py-2.5 font-['Poppins:Medium',_sans-serif] text-[13px] text-[#f4c758] transition-all duration-300 group-hover:border-[#e3b64b] group-hover:bg-[#e3b64b] group-hover:text-[#111]">
-                      <span>{project.cta}</span>
-                      <ExternalLink className="h-3.5 w-3.5" />
-                    </div>
-                  )}
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 rounded-full border border-[#e3b64b]/40 bg-[#e3b64b]/10 px-5 py-2.5 font-['Poppins:Medium',_sans-serif] text-[13px] text-[#f4c758] transition-all duration-300 hover:border-[#e3b64b] hover:bg-[#e3b64b] hover:text-[#111] hover:shadow-[0_0_20px_rgba(227,182,75,0.3)]"
+                      >
+                        <span>{project.cta}</span>
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </a>
+                    )}
+                    <span className="inline-flex items-center gap-1.5 font-['Poppins:Regular',_sans-serif] text-[12px] text-white/40 transition-colors group-hover:text-white/70">
+                      <span>Explore projects</span>
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
                 </div>
-              </CardComponent>
+              </div>
             );
           })}
         </div>
       </div>
+
+      {/* Project Showcase Modal */}
+      {selectedCategory && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedCategory.modalTitle}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+        >
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity duration-300"
+            onClick={() => setSelectedCategory(null)}
+          />
+
+          {/* Modal Container */}
+          <div className="relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[28px] border border-[#e3b64b]/30 bg-[#0e0d0b] text-white shadow-[0_25px_80px_rgba(0,0,0,0.9)]">
+            {/* Ambient decorative glow */}
+            <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#d5a331]/10 blur-[80px]" />
+            <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-[#e3b64b]/5 blur-[80px]" />
+
+            {/* Header */}
+            <div className="relative flex items-start justify-between border-b border-white/10 px-6 py-6 sm:px-8 sm:py-7">
+              <div>
+                <span className="font-['Poppins:Medium',_sans-serif] text-[11px] uppercase tracking-[0.28em] text-[#dcb04c]">
+                  {selectedCategory.badge}
+                </span>
+                <h3 className="mt-1 font-['Poppins:Bold',_sans-serif] text-[24px] text-white sm:text-[30px]">
+                  {selectedCategory.modalTitle}
+                </h3>
+                <p className="mt-1.5 max-w-xl font-['Poppins:Regular',_sans-serif] text-[13px] leading-relaxed text-white/50 sm:text-[14px]">
+                  {selectedCategory.modalSubtitle}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedCategory(null)}
+                aria-label="Close modal"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-[#e3b64b] hover:bg-[#e3b64b] hover:text-[#111]"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Content Body (Scrollable) */}
+            <div className="relative space-y-6 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
+              {/* Project Cards in this Category */}
+              {selectedCategory.projects.length > 0 ? (
+                <div className="space-y-6">
+                  {selectedCategory.projects.map((item) => (
+                    <article
+                      key={item.id}
+                      className="group relative overflow-hidden rounded-2xl border border-[#e3b64b]/25 bg-gradient-to-br from-[#1a160d] via-[#12110e] to-[#0c0c0b] p-6 sm:p-8"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#e3b64b]/40 bg-[#e3b64b]/15 px-3 py-1 font-['Poppins:Medium',_sans-serif] text-[11px] text-[#f4c758]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#e3b64b] animate-pulse" />
+                          {item.badge}
+                        </span>
+
+                        {item.url && (
+                          <span className="font-['Poppins:Regular',_sans-serif] text-[11px] tracking-wide text-white/40">
+                            Proprietary Venture
+                          </span>
+                        )}
+                      </div>
+
+                      <h4 className="mt-4 font-['Poppins:Bold',_sans-serif] text-[26px] text-white sm:text-[32px]">
+                        {item.name}
+                      </h4>
+
+                      <p className="mt-1 font-['Poppins:Medium',_sans-serif] text-[14px] text-[#f5d77f] sm:text-[15px]">
+                        {item.tagline}
+                      </p>
+
+                      <p className="mt-3 font-['Poppins:Regular',_sans-serif] text-[14px] leading-relaxed text-white/65">
+                        {item.description}
+                      </p>
+
+                      {/* Feature Highlights */}
+                      {item.features && item.features.length > 0 && (
+                        <div className="mt-5 space-y-2 border-t border-white/10 pt-4">
+                          <p className="font-['Poppins:Medium',_sans-serif] text-[11px] uppercase tracking-[0.2em] text-[#dcb04c]">
+                            Key Capabilities:
+                          </p>
+                          <ul className="grid gap-2 sm:grid-cols-2">
+                            {item.features.map((feature) => (
+                              <li
+                                key={feature}
+                                className="flex items-start gap-2 text-[13px] text-white/75"
+                              >
+                                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#e3b64b]" />
+                                <span className="font-['Poppins:Regular',_sans-serif]">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Action Links */}
+                      {item.url && (
+                        <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-white/10 pt-4">
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#c9942f] to-[#f5d77f] px-6 py-3 font-['Poppins:Bold',_sans-serif] text-[13px] text-[#17120a] transition-transform hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(227,182,75,0.4)]"
+                          >
+                            <span>{item.ctaText || "Visit Project"}</span>
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                          <span className="font-['Poppins:Regular',_sans-serif] text-[12px] text-white/40">
+                            Available in early-access pilot
+                          </span>
+                        </div>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+
+              {/* Informative Note / Call to Action / Future Pipeline */}
+              <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-center sm:p-8">
+                <p className="mx-auto max-w-lg font-['Poppins:Regular',_sans-serif] text-[14px] leading-relaxed text-white/50">
+                  {selectedCategory.emptyStateNotice}
+                </p>
+                {selectedCategory.projects.length === 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCategory(null);
+                      scrollToSection("contacts");
+                    }}
+                    className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#e3b64b]/40 bg-[#e3b64b]/10 px-6 py-2.5 font-['Poppins:Medium',_sans-serif] text-[13px] text-[#f4c758] transition-all duration-300 hover:border-[#e3b64b] hover:bg-[#e3b64b] hover:text-[#111]"
+                  >
+                    <span>Discuss a Project with PAGESTIO</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
