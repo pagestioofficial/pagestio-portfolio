@@ -199,26 +199,47 @@ function Navigation() {
 function HeroLogo() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+  const [isActive, setIsActive] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const updateCoordinates = (clientX: number, clientY: number) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    // Calculate normalized cursor position from center (-1 to 1)
-    const normX = (e.clientX - centerX) / (rect.width / 2);
-    const normY = (e.clientY - centerY) / (rect.height / 2);
+    const radius = Math.min(rect.width, rect.height) / 2 || 1;
+    const normX = (clientX - centerX) / radius;
+    const normY = (clientY - centerY) / radius;
     setRotate({
-      x: Math.max(-1, Math.min(1, normX)),
-      y: Math.max(-1, Math.min(1, normY)),
+      x: Math.max(-1.2, Math.min(1.2, normX)),
+      y: Math.max(-1.2, Math.min(1.2, normY)),
     });
   };
 
-  const handleMouseEnter = () => setIsHovered(true);
+  // Mouse handlers for desktop
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    updateCoordinates(e.clientX, e.clientY);
+  };
+  const handleMouseEnter = () => setIsActive(true);
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    setIsActive(false);
+    setRotate({ x: 0, y: 0 });
+  };
+
+  // Touch handlers for mobile devices (swiping / circling finger)
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setIsActive(true);
+    if (e.touches[0]) {
+      updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  };
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches[0]) {
+      updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  };
+  const handleTouchEnd = () => {
+    setIsActive(false);
     setRotate({ x: 0, y: 0 });
   };
 
@@ -227,17 +248,17 @@ function HeroLogo() {
     setTimeout(() => setIsClicked(false), 700);
   };
 
-  // Parallax offsets responding to cursor motion
-  const outerTranslateX = isHovered ? rotate.x * 16 : 0;
-  const outerTranslateY = isHovered ? rotate.y * 16 : 0;
-  const outerRotate = isHovered ? rotate.x * 20 : 0;
+  // Parallax offsets responding to cursor/finger motion
+  const outerTranslateX = isActive ? rotate.x * 18 : 0;
+  const outerTranslateY = isActive ? rotate.y * 18 : 0;
+  const outerRotate = isActive ? rotate.x * 24 : 0;
 
-  const innerTranslateX = isHovered ? rotate.x * 26 : 0;
-  const innerTranslateY = isHovered ? rotate.y * 26 : 0;
-  const innerRotate = isHovered ? rotate.y * -25 : 0;
+  const innerTranslateX = isActive ? rotate.x * 28 : 0;
+  const innerTranslateY = isActive ? rotate.y * 28 : 0;
+  const innerRotate = isActive ? rotate.y * -28 : 0;
 
-  const logoRotateY = isHovered ? rotate.x * 8 : 0;
-  const logoRotateX = isHovered ? -rotate.y * 8 : 0;
+  const logoRotateY = isActive ? rotate.x * 9 : 0;
+  const logoRotateX = isActive ? -rotate.y * 9 : 0;
 
   return (
     <div
@@ -248,6 +269,10 @@ function HeroLogo() {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       onClick={handleClick}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -255,7 +280,7 @@ function HeroLogo() {
           handleClick();
         }
       }}
-      className="group relative mx-auto flex w-full max-w-[540px] cursor-pointer select-none items-center justify-center lg:justify-end focus:outline-none"
+      className="group relative mx-auto flex w-full max-w-[540px] cursor-pointer select-none items-center justify-center lg:justify-end focus:outline-none touch-none"
     >
       {/* Click ripple shockwave ring */}
       <div
@@ -270,38 +295,38 @@ function HeroLogo() {
       <div
         style={{
           transform: `translate(${outerTranslateX}px, ${outerTranslateY}px) rotate(${outerRotate}deg) scale(${
-            isClicked ? 1.18 : isHovered ? 1.08 : 1
+            isClicked ? 1.18 : isActive ? 1.08 : 1
           })`,
         }}
-        className="pointer-events-none absolute h-[82%] w-[82%] rounded-full border border-[#e3b64b]/20 transition-all duration-300 ease-out group-hover:border-[#e3b64b]/40 group-hover:shadow-[0_0_30px_rgba(227,182,75,0.15)]"
+        className="pointer-events-none absolute h-[82%] w-[82%] rounded-full border border-[#e3b64b]/20 transition-all duration-200 ease-out group-hover:border-[#e3b64b]/40 group-hover:shadow-[0_0_30px_rgba(227,182,75,0.15)]"
       />
 
       {/* Inner Circle (Concentric Ring 2) */}
       <div
         style={{
           transform: `translate(${innerTranslateX}px, ${innerTranslateY}px) rotate(${innerRotate}deg) scale(${
-            isClicked ? 1.25 : isHovered ? 1.14 : 1
+            isClicked ? 1.25 : isActive ? 1.14 : 1
           })`,
         }}
-        className="pointer-events-none absolute h-[64%] w-[64%] rounded-full border border-[#e3b64b]/10 transition-all duration-300 ease-out group-hover:border-[#e3b64b]/30"
+        className="pointer-events-none absolute h-[64%] w-[64%] rounded-full border border-[#e3b64b]/10 transition-all duration-200 ease-out group-hover:border-[#e3b64b]/30"
       />
 
       {/* Extra Subtle Orbital Ring */}
       <div
         style={{
           transform: `translate(${-outerTranslateX * 0.6}px, ${-outerTranslateY * 0.6}px) scale(${
-            isHovered ? 1.04 : 1
+            isActive ? 1.04 : 1
           })`,
         }}
-        className="pointer-events-none absolute h-[95%] w-[95%] rounded-full border border-[#e3b64b]/5 transition-all duration-500 ease-out group-hover:border-[#e3b64b]/15"
+        className="pointer-events-none absolute h-[95%] w-[95%] rounded-full border border-[#e3b64b]/5 transition-all duration-300 ease-out group-hover:border-[#e3b64b]/15"
       />
 
       {/* Gold Ambient Glow Core */}
       <div
-        className={`pointer-events-none absolute inset-12 rounded-full transform-gpu transition-all duration-500 ${
+        className={`pointer-events-none absolute inset-12 rounded-full transform-gpu transition-all duration-300 ${
           isClicked
             ? "bg-[#ffe795]/25 blur-[90px] scale-125"
-            : isHovered
+            : isActive
             ? "bg-[#d6a438]/20 blur-[80px] scale-110"
             : "bg-[#d6a438]/10 blur-[70px] scale-100"
         }`}
@@ -313,10 +338,10 @@ function HeroLogo() {
         alt="PAGESTIO"
         style={{
           transform: `perspective(1000px) rotateY(${logoRotateY}deg) rotateX(${logoRotateX}deg) scale(${
-            isClicked ? 0.98 : isHovered ? 1.04 : 1
+            isClicked ? 0.98 : isActive ? 1.04 : 1
           })`,
         }}
-        className="relative w-full max-w-[470px] object-contain drop-shadow-[0_25px_65px_rgba(215,170,57,0.16)] transition-transform duration-300 ease-out group-hover:drop-shadow-[0_25px_80px_rgba(215,170,57,0.32)]"
+        className="relative w-full max-w-[470px] object-contain drop-shadow-[0_25px_65px_rgba(215,170,57,0.16)] transition-transform duration-200 ease-out group-hover:drop-shadow-[0_25px_80px_rgba(215,170,57,0.32)]"
       />
     </div>
   );
